@@ -4,9 +4,10 @@ package com.example.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Product;
@@ -35,6 +37,8 @@ public class ProductController {
 	@Autowired
 	private ProductService service;
 	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Operation(summary = "Save Products",
 		      description = "Create a Product. The response is a Product object with id, name, quantity and price.",
 		      tags = { "products", "post" })
@@ -44,7 +48,7 @@ public class ProductController {
 	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	@PostMapping
 	public Product save(@RequestBody ProductRequest productRequest) {
-		return service.save(productRequest);
+		return service.saveProduct(productRequest);
 	}
 	
 	@Operation(summary = "Retrieve list of all Products",
@@ -52,7 +56,8 @@ public class ProductController {
 		      tags = { "products", "get" })
 	@GetMapping
 	public List<Product> getAllProducts(){
-		return service.findAll();
+		logger.info("Get all products request received");
+		return service.getProducts();
 	}
 	
 	@Operation(summary = "Retrieve a Product by Id",
@@ -82,5 +87,18 @@ public class ProductController {
 			res = "Product Deleted";
 		}
 		return res;
+	}
+	
+	@Operation(summary = "Retrieve Product based on Name and Quantity",
+		      description = "The response is a Product object with id, name, quantity and price.",
+		      tags = { "products", "get" })
+	@GetMapping("/filter")
+	public ResponseEntity getProductByNameAndQty(@RequestParam String name,@RequestParam int qty){
+		logger.info("Get product by name and quantity request received");
+		Product p = service.getProductByNameAndQty(name, qty);
+		if(p != null)
+			return new ResponseEntity<Product>(p,HttpStatus.OK);
+		else
+			return new ResponseEntity<String>("Product with Name: " + name +" and Qty: " +qty + " does not exist!!!",HttpStatus.BAD_REQUEST);
 	}
 }

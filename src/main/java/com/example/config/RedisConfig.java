@@ -16,10 +16,10 @@ public class RedisConfig {
 	@Bean
 	public LettuceConnectionFactory connectionFactory() {
 		RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-		configuration.setHostName("redis-17311.c301.ap-south-1-1.ec2.cloud.redislabs.com");
-		configuration.setPort(17311);
+		configuration.setHostName("redis-13824.c264.ap-south-1-1.ec2.cloud.redislabs.com");
+		configuration.setPort(13824);
 		configuration.setUsername("default");
-		configuration.setPassword("4c21yp5OFH2SMvJWBORdJ20uvsIV2b2M");
+		configuration.setPassword("pdGOTkZY7tQ5uY57l2bjJGKU4ra9WwkL");
 		return new LettuceConnectionFactory(configuration);
 	}
 

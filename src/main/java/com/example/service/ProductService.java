@@ -8,12 +8,14 @@ import com.example.payload.ProductRequest;
 
 public interface ProductService {
 
-	Product save(ProductRequest product);
+	Product saveProduct(ProductRequest product);
 
-	List<Product> findAll();
+	List<Product> getProducts();
 
 	Optional<Product> findProductById(Long id);
 
 	void deleteProduct(Long id);
+	
+	Product getProductByNameAndQty(String name, int qty);
 
 }

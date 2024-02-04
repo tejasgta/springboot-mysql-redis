@@ -19,13 +19,13 @@ public class ProductServiceImpl implements ProductService {
 	private ProductRepository repo;
 
 	@Override
-	public Product save(ProductRequest request) {
+	public Product saveProduct(ProductRequest request) {
 		Product p = new Product(request.getName(), request.getQty(), request.getPrice());
 		return repo.save(p);
 	}
 
 	@Override
-	public List<Product> findAll() {
+	public List<Product> getProducts() {
 		return repo.findAll();
 	}
 
@@ -39,6 +39,11 @@ public class ProductServiceImpl implements ProductService {
 	@CacheEvict(cacheNames = "Product", key = "#id")
 	public void deleteProduct(Long id) {
 		repo.deleteById(id);
+	}
+
+	@Override
+	public Product getProductByNameAndQty(String name, int qty) {
+		return repo.findByName(name, qty);
 	}
 
 }

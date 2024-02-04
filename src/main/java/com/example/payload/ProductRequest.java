@@ -1,5 +1,7 @@
 package com.example.payload;
 
+import com.example.entity.Product;
+
 public class ProductRequest {
 	private String name;
 	private int qty;
@@ -29,6 +31,11 @@ public class ProductRequest {
 		this.price = price;
 	}
 	public ProductRequest() {
+	}
+	public ProductRequest(Product product) {
+		this.name = product.getName();
+		this.qty = product.getQty();
+		this.price = product.getPrice();
 	}
 	
 	
